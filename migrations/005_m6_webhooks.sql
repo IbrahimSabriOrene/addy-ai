@@ -1,0 +1,1 @@
+CREATE TABLE app.webhook_events (provider text NOT NULL, event_id text NOT NULL, payload_hash text NOT NULL, payload jsonb NOT NULL, received_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY (provider, event_id));

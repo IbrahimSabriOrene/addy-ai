@@ -1,0 +1,1 @@
+ALTER TABLE app.credit_reservations DROP CONSTRAINT credit_reservations_job_id_key;

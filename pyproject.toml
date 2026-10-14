@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mobile-ad-maker"
+version = "0.1.0"
+description = "LangGraph pipeline turning a product screenshot into a ready-to-post social/ad video. Same architectural toolkit as the AI Orchestrator, separate codebase."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi==0.141.1",
+    "google-genai==2.22.0",
+    "langchain-core==1.6.2",
+    "langchain-google-genai==4.4.0",
+    "langgraph==1.2.11",
+    "langgraph-checkpoint-postgres==3.1.2",
+    "pillow==12.3.0",
+    "psycopg[binary,pool]==3.3.5",
+    "pydantic==2.13.5",
+    "pyjwt[crypto]==2.13.0",
+    "python-dotenv==1.2.3",
+    "supabase==2.31.0",
+    "uvicorn==0.52.4",
+]
+
+[project.optional-dependencies]
+graylog = ["graypy>=2.1"]
+dev = ["pytest==9.1.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project.scripts]
+admaker-api = "admaker.api:main"
+admaker-migrate = "admaker.db:main"
+admaker-worker = "admaker.worker:main"

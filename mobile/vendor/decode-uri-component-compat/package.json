@@ -1,0 +1,9 @@
+{
+  "name": "addy-decode-uri-component-compat",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.cjs",
+  "dependencies": {
+    "decode-uri-component-modern": "npm:decode-uri-component@0.5.0"
+  }
+}

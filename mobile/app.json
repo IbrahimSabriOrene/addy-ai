@@ -1,0 +1,67 @@
+{
+  "expo": {
+    "name": "Addy AI",
+    "icon": "./assets/brand/addy-icon.png",
+    "slug": "mobileadmaker",
+    "scheme": "mobileadmaker",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "locales": {
+      "en": { "ios": { "NSPhotoLibraryUsageDescription": "Allow Addy AI to use your selected product photos to create ads." } },
+      "tr": { "ios": { "NSPhotoLibraryUsageDescription": "Addy AI'ın reklam oluşturmak için seçtiğiniz ürün fotoğraflarını kullanmasına izin verin." } },
+      "pt-BR": { "ios": { "NSPhotoLibraryUsageDescription": "Permita que o Addy AI use as fotos de produto selecionadas para criar anúncios." } },
+      "es": { "ios": { "NSPhotoLibraryUsageDescription": "Permite que Addy AI use las fotos de producto seleccionadas para crear anuncios." } }
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.mobileadmaker.app",
+      "infoPlist": {
+        "CFBundleLocalizations": ["en", "tr", "pt-BR", "es"],
+        "NSPhotoLibraryUsageDescription": "Addy AI needs access to your photos so you can turn a product shot into an ad."
+      }
+    },
+    "android": {
+      "package": "com.mobileadmaker.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/brand/addy-icon.png",
+        "backgroundColor": "#0e0e11"
+      }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0e0e11",
+          "resizeMode": "contain",
+          "image": "./assets/brand/addy-icon.png",
+          "imageWidth": 200
+        }
+      ],
+      "expo-router",
+      "expo-notifications",
+      "expo-font",
+      "expo-secure-store",
+      "expo-apple-authentication",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Addy AI to use your product photos.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      "expo-asset",
+      "expo-video",
+      "expo-image",
+      "expo-sharing",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "web": {
+      "favicon": "./assets/brand/addy-icon.png"
+    }
+  }
+}

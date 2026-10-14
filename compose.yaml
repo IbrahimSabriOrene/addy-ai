@@ -1,0 +1,66 @@
+services:
+  db:
+    image: supabase/postgres:15.8.1.085
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "54322:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: .
+    command: ["sh", "-c", "admaker-migrate && admaker-api"]
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
+      WEB_ORIGINS: http://localhost:8081,http://127.0.0.1:8081
+      ENABLE_LOCAL_FIXTURE_UI: "true"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./.local-assets:/app/.local-assets
+    depends_on:
+      db:
+        condition: service_healthy
+
+  deletion-worker:
+    profiles: ["deletion"]
+    build: .
+    command: ["sh", "-c", "admaker-migrate && python -m admaker.deletion_worker --root /app/.local-assets"]
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+    volumes:
+      - ./.local-assets:/app/.local-assets
+    depends_on:
+      db:
+        condition: service_healthy
+
+  engagement-worker:
+    profiles: ["engagement"]
+    build: .
+    restart: unless-stopped
+    command: ["sh", "-c", "admaker-migrate && python -m admaker.growth_worker --interval 300"]
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
+      ENABLE_ENGAGEMENT_PUSH: ${ENABLE_ENGAGEMENT_PUSH:-false}
+      EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN:-}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    build: .
+    command: ["sh", "-c", "admaker-migrate && admaker-worker"]
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
+      RECOVER_EXPIRED_RUNS: "false"
+    volumes:
+      - ./.local-assets:/app/.local-assets
+    depends_on:
+      db:
+        condition: service_healthy
